@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+tag=
+version=
+cid=
+envs=
+mounts=
+ports=
+
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-t|--tag)
+			tag=$2
+			shift
+			;;
+		-v|--version)
+			version=$2
+			shift
+			;;
+		-c|--cid)
+			cid="-cidfile $2"
+			shift
+			;;
+		-e|--env)
+			envs="-e $2 $envs"
+			shift
+			;;
+		-m|--mount)
+			mounts="-v $2 $mounts"
+			shift
+			;;
+		-p|--port)
+			ports="-p $2 $ports"
+			shift
+			;;
+	esac
+	shift
+done
+
+docker run -d -i -t $cid $mounts $ports $envs $tag:$version

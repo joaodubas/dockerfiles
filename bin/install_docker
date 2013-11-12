@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+here=$(pwd)
+repository=
+tag=0.0.1
+path=
+ssh=false
+
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		-r|--repository)
+			repository=$2
+			shift
+			;;
+		-t|--tag)
+			tag=$2
+			shift
+			;;
+		-p|--path)
+			path=$2
+			shift
+			;;
+		-s|--ssh)
+			ssh=true
+			;;
+	esac
+	shift
+done
+
+copy_ssh_key() {
+	cp $HOME/.ssh/id_rsa.pub $path/id_rsa.pub
+}
+
+remove_ssh_key() {
+	rm $path/id_rsa.pub
+}
+
+pre_process() {
+	cd $here
+	if $ssh ; then
+		copy_ssh_key
+	fi
+}
+
+post_process() {
+	cd $here
+	if $ssh ; then
+		remove_ssh_key
+	fi
+}
+
+install_image() {
+	if `which docker` images | grep $repository | grep -q $tag; then
+		echo "$repository:$tag already available"
+		exit 0
+	fi
+	pre_process
+	cd $path && docker build -q -t $repository:$tag .
+	post_process
+	docker tag $repository:$tag $repository:latest
+}
+
+install_image
