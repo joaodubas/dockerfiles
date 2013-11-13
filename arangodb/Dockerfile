@@ -10,7 +10,7 @@ RUN echo "deb http://www.arangodb.org/repositories/stable/xUbuntu_12.10/ /" >> /
     && apt-key add - < /Release.key \
     && rm /Release.key \
     && apt-get -y update \
-    && apt-get install -y arangodb \
+    && apt-get install -y arangodb
 
 # Add sshd
 RUN mkdir -p /root/.ssh && chmod 700 /root/.ssh
