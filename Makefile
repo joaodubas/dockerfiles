@@ -1,4 +1,3 @@
-CMD_BASE=docker
 ROOT=$(CURDIR)
 
 include DockerImages.mak
