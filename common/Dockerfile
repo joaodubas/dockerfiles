@@ -1,7 +1,7 @@
 # sshd & supervisord
 #
 # VERSION: see `TAG`
-FROM base:ubuntu-12.10
+FROM stackbrew/ubuntu:quantal
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # Update apt sources
