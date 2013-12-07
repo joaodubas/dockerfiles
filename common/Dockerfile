@@ -17,7 +17,7 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD common.conf /etc/supervisor/conf.d/program.d/common.conf
 
 # Add supervisorctl alias
-RUN echo "alias supervisorctl=/usr/bin/supervisorctl -c /etc/supervisor/conf.d/supervisord.conf" >> /etc/profile
+RUN echo 'alias supervisorctl="/usr/bin/supervisorctl -c /etc/supervisor/conf.d/supervisord.conf"' >> /etc/profile
 
 # Expose ports for ssh (22) and supervisor (9001)
 EXPOSE 22 9001
