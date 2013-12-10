@@ -5,3 +5,4 @@ DOCKER_ARANGO=./arangodb
 DOCKER_NODE=./node
 DOCKER_MARIA=./maria
 DOCKER_MEMSQL=./memsql
+DOCKER_LEVELDB=./leveldb
