@@ -18,7 +18,7 @@ ADD id_rsa.pub /root/.ssh/authorized_keys
 RUN chmod 400 /root/.ssh/authorized_keys && chown root:root /root/.ssh/authorized_keys
 
 # Add supervisor conf file
-ADD app.conf /etc/supervisor/conf.d/program.d/app.conf
+ADD arangodb.conf /etc/supervisor/conf.d/program.d/arangodb.conf
 
 # Expose port 8529 for arango connectivity
 EXPOSE 8529

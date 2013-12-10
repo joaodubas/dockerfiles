@@ -18,7 +18,7 @@ ADD id_rsa.pub /root/.ssh/authorized_keys
 RUN chmod 400 /root/.ssh/authorized_keys && chown root:root /root/.ssh/authorized_keys
 
 # Add supervisor conf file
-ADD app.conf /etc/supervisor/conf.d/program.d/app.conf
+ADD maria.conf /etc/supervisor/conf.d/program.d/maria.conf
 
 # Expose port 3306 for mariadb connectivity
 EXPOSE 3306
