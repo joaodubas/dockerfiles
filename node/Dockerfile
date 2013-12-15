@@ -5,7 +5,7 @@ FROM joaodubas/common:latest
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # Install node binary
-ENV VERSION_NODE 0.10.22
+ENV VERSION_NODE 0.10.23
 RUN mkdir /opt/downloads \
     && cd /opt/downloads \
     && wget http://nodejs.org/dist/v$VERSION_NODE/node-v$VERSION_NODE-linux-x64.tar.gz \
