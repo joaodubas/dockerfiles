@@ -12,12 +12,16 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" >> /etc/apt/sou
     && mkdir -p /var/run/sshd \
     && locale-gen en_US en_US.UTF-8
 
+# Add supervisorctl alias
+RUN echo 'alias supervisorctl="/usr/bin/supervisorctl -c /etc/supervisor/conf.d/supervisord.conf"' >> /etc/profile
+
+# Add password to root user
+ENV UPASS 123root4
+RUN echo '$UPASS\n$UPASS\n' | passwd root
+
 # Add supervisor/ssh conf
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD common.conf /etc/supervisor/conf.d/program.d/common.conf
-
-# Add supervisorctl alias
-RUN echo 'alias supervisorctl="/usr/bin/supervisorctl -c /etc/supervisor/conf.d/supervisord.conf"' >> /etc/profile
 
 # Expose ports for ssh (22) and supervisor (9001)
 EXPOSE 22 9001
