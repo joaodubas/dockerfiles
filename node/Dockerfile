@@ -4,6 +4,10 @@
 FROM joaodubas/common:latest
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
+# Update dependencies
+RUN apt-get -y update \
+    && apt-get -y install git
+
 # Install node binary
 ENV VERSION_NODE 0.10.23
 RUN mkdir /opt/downloads \
