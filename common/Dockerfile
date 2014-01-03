@@ -17,7 +17,11 @@ RUN echo 'alias supervisorctl="/usr/bin/supervisorctl -c /etc/supervisor/conf.d/
 
 # Add password to root user
 ENV UPASS 123root4
-RUN echo '$UPASS\n$UPASS\n' | passwd root
+RUN echo root:$UPASS | chpasswd
+
+# Change sshd config
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
+    && sed -r 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config
 
 # Add supervisor/ssh conf
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
