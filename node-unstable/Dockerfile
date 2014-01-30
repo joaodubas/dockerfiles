@@ -9,7 +9,7 @@ RUN apt-get -y update \
     && apt-get -y install git
 
 # Install node binary
-ENV VERSION_NODE 0.11.10
+ENV VERSION_NODE 0.11.11
 RUN mkdir /opt/downloads \
     && cd /opt/downloads \
     && wget http://nodejs.org/dist/v$VERSION_NODE/node-v$VERSION_NODE-linux-x64.tar.gz \
