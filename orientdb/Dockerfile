@@ -33,7 +33,7 @@ RUN mkdir /opt/downloads \
     && wget http://www.orientdb.org/portal/function/portal/download/paywithatweet/-/-/-/-/-/orientdb-community-$ORIENT_VERSION.tar.gz/false/false/linux \
     && tar -xzf linux \
     && cd orientdb-community-$ORIENT_VERSION \
-    && ln -s ./bin/* /usr/local/bin/
+    && ln -s /opt/downloads/orientdb-community-$ORIENT_VERSION/bin/* /usr/local/bin/
 
 # Expose port 2424 and 2480 for orientdb connectivity
 EXPOSE 2424
