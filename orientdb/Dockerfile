@@ -6,7 +6,25 @@ MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # Get needed packages
 RUN apt-get -y -qq update \
-    && apt-get -y -qq install wget openjdk-7-jdk git-core ant
+    && apt-get -y -qq install wget git-core
+
+# Fake fuse install to allow jdk
+# Based on solution in gist by Henrik Muehe
+# https://gist.github.com/henrik-muehe/6155333
+# For the issue 514 in docker
+# https://github.com/dotcloud/docker/issues/514
+RUN apt-get -y -qq install libfuse2 \
+    && cd /tmp \
+    && apt-get -y -qq download fuse \
+    && dpkg-deb -x fuse_* . \
+    && dpkg-deb -e fuse_* \
+    && rm fuse_*.deb \
+    && echo -en '#!/bin/bash\nexit 0\n' > DEBIAN/postinst \
+    && dpkg-deb -b . /fuse.deb \
+    && dpkg -i /fuse.deb
+
+# Get jdk and ant
+RUN apt-get -y -qq install openjdk-7-jdk ant
 
 # Get orientdb
 ENV ORIENT_VERSION 1.6.4
