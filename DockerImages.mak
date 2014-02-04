@@ -7,5 +7,6 @@ DOCKER_NODE_UNSTABLE=./node-unstable
 DOCKER_MARIA=./maria
 DOCKER_MEMSQL=./memsql
 DOCKER_LEVELDB=./leveldb
+DOCKER_MULTILEVEL=./multilevel
 DOCKER_FTPD=./ftpd
 DOCKER_ORIENT=./orientdb

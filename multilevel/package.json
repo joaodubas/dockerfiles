@@ -1,0 +1,28 @@
+{
+  "name": "docker-multilevel",
+  "version": "0.0.1",
+  "description": "Expose multilevel trough a docker container.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joaodubas/dockerfiles.git"
+  },
+  "keywords": [
+    "leveldb",
+    "levelup",
+    "leveldown",
+    "multilevel",
+    "docker"
+  ],
+  "author": {
+    "name": "Joao Paulo Dubas",
+    "email": "joao.dubas@gmail.com",
+    "url": "http://blog.joaodubas.me"
+  },
+  "dependencies": {
+    "leveldown": "~0.10.2",
+    "levelup": "~0.18.2",
+    "multilevel": "~5.5.0"
+  },
+  "license": "MIT"
+}
