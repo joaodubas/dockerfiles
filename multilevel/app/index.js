@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var net = require('net');
 var levelup = require('levelup');
 var leveldown = require('leveldown');
