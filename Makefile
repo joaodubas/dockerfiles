@@ -6,6 +6,7 @@ install:
 	@./bin/install_docker \
 		-s \
 		-p $(DOCKER_$(image)) \
+		-rm \
 		-r `cat $(DOCKER_$(image))/REPOSITORY` \
 		-t `cat $(DOCKER_$(image))/TAG`
 
