@@ -55,7 +55,7 @@ install_image() {
 		exit 0
 	fi
 	pre_process
-	cd $path && docker build -q -t $repository:$tag .
+	cd $path && docker build -q --rm -t $repository:$tag .
 	post_process
 	docker tag $repository:$tag $repository:latest
 }
