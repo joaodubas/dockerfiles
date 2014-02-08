@@ -27,7 +27,7 @@ RUN cd /opt/multilevel \
 WORKDIR /opt/multilevel
 
 # Add volume to handle data
-VOLUME ['/opt/data', '/opt/app', '/opt/multilevel']
+VOLUME ['/opt/data', '/opt/app']
 
 # Expose multilevel port
 EXPOSE 3001
