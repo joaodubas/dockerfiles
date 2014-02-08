@@ -16,17 +16,17 @@ RUN apt-get -y install software-properties-common \
 
 # Add nodejs levelhud app
 ENV NODE_PORT 3002
-RUN mkdir -p /opt/{data,app/log}
-ADD ./app /opt/app
+RUN mkdir -p /opt/{levelhud,app/log}
+ADD ./app /opt/levelhud
 ADD ./levelhud.conf /etc/supervisor/conf.d/program.d/levelhud.conf
-RUN cd /opt/app \
+RUN cd /opt/levelhud\
     && /usr/local/bin/npm install
 
 # Set workdir
-WORKDIR /opt/app
+WORKDIR /opt/levelhud
 
 # Add volume to handle data
-VOLUME ['/opt/data', '/opt/app']
+VOLUME ['/opt/app']
 
 # Expose levelhud port
 EXPOSE 3002
