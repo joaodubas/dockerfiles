@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+function _abspath() {
+	python -c "import sys, os; sys.stdout.write(os.path.realpath(sys.argv[1]))" $1
+}
+
+function _run() {
+    echo $@
+}
+
+function zopfli() {
+	_run 'zopfli' $(_abspath $1)
+}
+
+function jpgcrush() {
+	_run 'jpgcrush' $(_abspath $1)
+}
+
+# _abspath $1
+
+zopfli $@
+
+jpgcrush $@
