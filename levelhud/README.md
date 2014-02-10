@@ -13,7 +13,7 @@ $ docker run -d -t \
 -name levelhud \
 -e DB_PORT_3001_TCP_ADDR:<address_to_multilevel> \
 -e DB_PORT_3001_TCP_PORT:<port_to_multilevel> \
--v `pwd`/log:/opt/app/log \
+-v `pwd`:/opt/app \
 joaodubas/levelhud:latest
 ```
 
@@ -43,8 +43,8 @@ joaodubas/levelhud:latest
 
 The image expects one volume to be made available:
 
-* `/opt/app/log`: path were logs for `supervisor`, `sshd` and `multilevel`
-  process are available.
+* `/opt/app`: path that contains a `log` dir, were logs for `supervisor`, `sshd`
+  and `multilevel` process are available.
 
 # Ports
 

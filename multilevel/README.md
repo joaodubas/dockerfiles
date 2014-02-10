@@ -8,14 +8,14 @@ Image that allow remote access to [leveldb][leveldb] through
 An example command to run the `multilevel` image is:
 
 ```shell
-$ mkdir {data,log}
+$ mkdir -p{data,app/log}
 $ docker run -d -t \
 >    -name multilevel-db \
 >    -p 40022:22 \
 >    -p 9001:9001 \
 >    -p 3001:3001 \
 >    -v `pwd`/data:/opt/data \
->    -v `pwd`/log:/opt/app/log \
+>    -v `pwd`:/opt/app \
 >    joaodubas/multilevel:latest
 ```
 
@@ -24,8 +24,8 @@ $ docker run -d -t \
 The image expects two volumes to be made available:
 
 * `/opt/data`: path were the leveldb data is available.
-* `/opt/app/log`: path were logs for `supervisor`, `sshd` and `multilevel`
-  process are available.
+* `/opt/app`: path that contain a `log` dir, where logs for `supervisor`, `sshd`
+  and `multilevel` process are available.
 
 ### Ports
 
