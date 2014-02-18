@@ -42,7 +42,7 @@ RUN sed -ri 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 EXPOSE 22 8080
 
 # Expected volume to store logs and runtime circus confs
-VOLUME ["/opt/log", "/etc/circus/conf.d/hook.d"]
+VOLUME ["/log", "/etc/circus/conf.d/hook.d"]
 
 # Start supervisord
 ENTRYPOINT ["/usr/local/bin/circusd"]
