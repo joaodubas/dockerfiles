@@ -6,7 +6,7 @@ MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # Update system and install deps
 RUN apt-get -y -qq update \
-    apt-get -y -qq install build-essential wget libpcre3 libpcre3-dev zlib1g zlib1g-dev
+    && apt-get -y -qq install build-essential wget libpcre3 libpcre3-dev zlib1g zlib1g-dev
 
 # Retrieve nginx
 ENV NGINX_VERSION 1.5.10
@@ -17,5 +17,7 @@ RUN mkdir /opt/downloads \
     && cd nginx-$NGINX_VERSION \
     && ./configure \
     && make install \
-    && ln /usr/local/nginx/sbin/* /usr/local/sbin/ \
-    && sed -ri %s/#user nobody/user root/g
+    && ln /usr/local/nginx/sbin/* /usr/local/sbin/
+
+# Prepare nginx.conf
+RUN sed -ri %s/#user nobody/user root root/g
