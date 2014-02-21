@@ -16,3 +16,14 @@ RUN mkdir /opt/downloads \
     && tar -xzf node-v$VERSION_NODE-linux-x64.tar.gz \
     && ln -s node-v$VERSION_NODE-linux-x64 nodejs \
     && ln -s /opt/downloads/nodejs/bin/* /usr/local/bin
+
+# Expose port 80
+EXPOSE 80
+
+# Define expected volumes
+VOLUME ["/nginx"]
+
+# Add base nginx configuration
+ADD nginx.conf /usr/local/nginx/conf/
+ADD mime.types /usr/local/nginx/conf/
+ADD proxy_params /usr/local/nginx/conf/
