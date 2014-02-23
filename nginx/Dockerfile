@@ -19,5 +19,13 @@ RUN mkdir /opt/downloads \
     && make install \
     && ln /usr/local/nginx/sbin/* /usr/local/sbin/
 
-# Prepare nginx.conf
-RUN sed -ri %s/#user nobody/user root root/g
+# Expose port 80
+EXPOSE 80
+
+# Define expected volumes
+VOLUME ["/nginx"]
+
+# Add base nginx configuration
+ADD nginx.conf /usr/local/nginx/conf/
+ADD mime.types /usr/local/nginx/conf/
+ADD proxy_params /usr/local/nginx/conf/
