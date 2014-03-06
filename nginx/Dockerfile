@@ -29,3 +29,6 @@ VOLUME ["/nginx"]
 ADD nginx.conf /usr/local/nginx/conf/
 ADD mime.types /usr/local/nginx/conf/
 ADD proxy_params /usr/local/nginx/conf/
+
+# Add supervisor conf
+ADD supervisor.conf /etc/supervisor/conf.d/program.d/nginx.conf
