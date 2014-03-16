@@ -14,3 +14,4 @@ DOCKER_FTPD=./ftpd
 DOCKER_IMAGE_OPTMIN=./image-optmin
 DOCKER_ORIENT=./orientdb
 DOCKER_NGINX=./nginx
+DOCKER_SPIDER=./spidermonkey
