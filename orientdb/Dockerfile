@@ -27,7 +27,7 @@ RUN apt-get -y -qq install libfuse2 \
 RUN apt-get -y -qq install openjdk-7-jdk ant
 
 # Get orientdb
-ENV ORIENT_VERSION orientdb-community-1.6.4
+ENV ORIENT_VERSION orientdb-community-1.7-rc1
 RUN mkdir /opt/downloads \
     && cd /opt/downloads \
     && wget http://www.orientdb.org/portal/function/portal/download/paywithatweet/-/-/-/-/-/$ORIENT_VERSION.tar.gz/false/false/linux \
