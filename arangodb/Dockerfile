@@ -4,13 +4,16 @@
 FROM joaodubas/common:latest
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
-# Get needed packages
-ADD http://www.arangodb.org/repositories/stable/xUbuntu_12.10/Release.key /Release.key
-RUN echo "deb http://www.arangodb.org/repositories/stable/xUbuntu_12.10/ /" >> /etc/apt/sources.list.d/arangodb.list \
-    && apt-key add - < /Release.key \
-    && rm /Release.key \
-    && apt-get -y update \
-    && apt-get install -y arangodb
+# Enable arangodb repository
+ENV ARANGO_URL http://www.arangodb.org/repositories/arangodb2/xUbuntu_12.10/
+RUN echo "deb $ARANGO_URL /" >> /etc/apt/sources.list.d/arangodb.list \
+    && wget $ARANGO_URL/Release.key \
+    && apt-key add - < Release.key \
+    && rm Release.key
+
+# Install arangodb
+RUN apt-get -y update \
+    && apt-get install -y arangodb=2.0.0
 
 # Add sshd
 RUN mkdir -p /root/.ssh && chmod 700 /root/.ssh
