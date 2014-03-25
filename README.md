@@ -24,6 +24,7 @@ The available images are:
 * NODE
 * NODE_UNSTABLE
 * ORIENT
+* SPIDER
 
 # LICENSE
 
