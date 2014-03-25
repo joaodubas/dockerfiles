@@ -15,3 +15,7 @@ RUN mkdir -p /opt/downloads/jsshell \
     && unzip jsshell-linux-x86_64.zip -d /opt/downloads/jsshell \
     && ln -s /opt/downloads/jsshell/js /usr/local/bin \
     && ln -s /opt/downloads/jsshell/*.so /usr/local/share
+
+# Define volumes and workdir
+VOLUME ['/opt/app']
+WORKDIR /opt/app
