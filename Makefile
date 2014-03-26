@@ -2,6 +2,13 @@ ROOT=$(CURDIR)
 
 include DockerImages.mak
 
+create:
+	@mkdir $(project) \
+		&& echo '0.0.1' > $(project)/TAG \
+		&& echo joaodubas/$(project) > $(project)/REPOSITORY \
+		&& touch $(project)/Dockerfile \
+		&& cp LICENSE $(project)/LICENSE
+
 install:
 	@./bin/install_docker \
 		-s \
@@ -27,4 +34,4 @@ local_test:
 		-p 8062:8061\
 		-p 9003:9001
 
-.PHONY:	install
+.PHONY:	install create
