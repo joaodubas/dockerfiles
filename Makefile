@@ -7,6 +7,7 @@ create:
 		&& echo '0.0.1' > $(project)/TAG \
 		&& echo joaodubas/$(project) > $(project)/REPOSITORY \
 		&& touch $(project)/Dockerfile \
+		&& touch $(project)/README.md \
 		&& cp LICENSE $(project)/LICENSE
 
 install:
