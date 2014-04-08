@@ -1,7 +1,7 @@
 # sshd & circusd
 #
 # VERSION: see `TAG`
-FROM stackbrew/ubuntu:13.10
+FROM debian:jessie
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # Enable ubuntu repos
@@ -13,10 +13,15 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" >> /etc/apt/sou
 
 # Update distro and install needed packages
 RUN apt-get -y -qq update \
-    && apt-get -y -qq upgrade \
-    && apt-get -y -qq install openssh-server python-setuptools python-dev libzmq-dev libevent-dev \
-    && mkdir -p /var/run/sshd \
-    && locale-gen en_US en_US.UTF-8
+    && apt-get -y -qq install \
+        openssh-server \
+        python-setuptools \
+        python-dev \
+        libzmq-dev \
+        libevent-dev \
+        locales \
+    && mkdir -p /var/run/sshd
+RUN locale-gen en_US en_US.UTF-8
 
 # Prepare virtualenv and virtualenvwrapper
 ENV WORKON_HOME /opt/.venv
@@ -25,11 +30,15 @@ RUN easy_install pip \
     && pip install virtualenv virtualenvwrapper
 
 # Install circus and dependencies
-RUN mkdir -p /opt/.venv/circus \
-    && /usr/local/bin/virtualenv /opt/.venv/circus \
+RUN mkdir -p $WORKON_HOME/circus \
+    && /usr/local/bin/virtualenv $WORKON_HOME/circus \
     && /bin/bash -c "source /opt/.venv/circus/bin/activate" \
-    && pip install circus circus-web chaussette \
-    && ln -s /opt/.venv/circus/bin/{chaussette,circusctl,circusd} /usr/local/bin
+    && $WORKON_HOME/circus/bin/pip install circus circus-web chaussette \
+    && $WORKON_HOME/circus/bin/pip uninstall -y psutil \
+    && $WORKON_HOME/circus/bin/pip install psutil==1.2.1 \
+    && ln -s $WORKON_HOME/circus/bin/b* /usr/local/bin/ \
+    && ln -s $WORKON_HOME/circus/bin/c* /usr/local/bin/ \
+    && ln -s $WORKON_HOME/circus/bin/m* /usr/local/bin/
 
 # Add password to root user
 ENV UPASS 123root4
