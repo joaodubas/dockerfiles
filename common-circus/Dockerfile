@@ -24,7 +24,7 @@ ENV WORKON_HOME /opt/.venv
 ENV PROJECT_HOME /opt/app
 RUN easy_install pip \
     && pip install virtualenv virtualenvwrapper \
-    && echo "source /usr/local/bin/virtualenvwrapper.sh" > /etc/skel/.bashrc
+    && echo "source /usr/local/bin/virtualenvwrapper.sh" >> /etc/skel/.bashrc
 
 # Install circus and dependencies
 RUN mkdir -p $WORKON_HOME/circus \
