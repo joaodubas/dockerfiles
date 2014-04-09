@@ -4,30 +4,27 @@
 FROM debian:jessie
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
-# Enable ubuntu repos
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" >> /etc/apt/sources.list \
-    && echo "deb http://archive.ubuntu.com/ubuntu saucy multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://archive.ubuntu.com/ubuntu saucy-updates multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://archive.ubuntu.com/ubuntu saucy multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://archive.ubuntu.com/ubuntu saucy-updates multiverse" >> /etc/apt/sources.list
-
 # Update distro and install needed packages
 RUN apt-get -y -qq update \
     && apt-get -y -qq install \
+        build-essential \
         openssh-server \
         python-setuptools \
         python-dev \
         libzmq-dev \
         libevent-dev \
         locales \
-    && mkdir -p /var/run/sshd
-RUN locale-gen en_US en_US.UTF-8
+    && mkdir -p /var/run/sshd \
+    && locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
 
 # Prepare virtualenv and virtualenvwrapper
 ENV WORKON_HOME /opt/.venv
 ENV PROJECT_HOME /opt/app
 RUN easy_install pip \
-    && pip install virtualenv virtualenvwrapper
+    && pip install virtualenv virtualenvwrapper \
+    && echo "source /usr/local/bin/virtualenvwrapper.sh" > /etc/skel/.bashrc
 
 # Install circus and dependencies
 RUN mkdir -p $WORKON_HOME/circus \
