@@ -1,14 +1,14 @@
 # moodle
 #
 # VERSION: see `TAG`
-FROM stackbrew/ubuntu:14.04
+FROM debian:jessie
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # update system and install deps
-RUN apt-get -i -qq --force-yes update \
-    && apt-get -i -qq --force-yes install \
+RUN apt-get -y -qq --force-yes update \
+    && apt-get -y -qq --force-yes install \
         software-properties-common \
-        git \
+        wget \
         nginx-full \
         php5 \
         php5-fpm \
@@ -27,19 +27,59 @@ RUN apt-key \
         hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db \
     && add-apt-repository -y \
         'deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu trusty main' \
-    && apt-get -i -qq --force-yes update \
-    && apt-get -i -qq --force-yes install \
+    && apt-get -y -qq --force-yes update \
+    && apt-get -y -qq --force-yes install \
         mariadb-client \
         php5-mysql
 
-# clone moodle
+# download moodle
+ENV APP_V 27
+ENV APP_S stable$APP_V
+ENV APP_C moodle-latest-$APP_V.tgz
 RUN mkdir -p /opt/src \
     && cd /opt/src \
-    && git clone https://github.com/moodle/moodle.git \
-    && cd moodle \
-    && git checkout -t origin/MOODLE_26_STABLE \
-    && chmod 0755 /opt/src/moodle
+    && wget http://download.moodle.org/download.php/direct/$APP_S/$APP_C \
+    && tar -xzf $APP_C
 
 # create data folder
-RUN mkdir /var/moodledata \
-    && chmod 0777 /var/moodledata
+RUN mkdir /var/moodledata
+
+# change moodle perms and ownership
+RUN chmod 6755 /opt/src/moodle \
+    && find /opt/src/moodle -type f -exec chmod 6644 {} \; \
+    && chmod 6777 /var/moodledata \
+    && chown -R www-data:www-data /opt/src/moodle \
+    && chown -R www-data:www-data /var/moodledata
+
+# install circus
+RUN apt-get -y -qq --force-yes update \
+    && apt-get -y -qq --force-yes install \
+        python-setuptools \
+        python-dev \
+        libzmq-dev \
+        libevent-dev \
+    && easy_install pip \
+    && pip install circus circus-web chaussette \
+    && pip uninstall -y psutil \
+    && pip install psutil==1.2.1
+
+# configure circus
+RUN mkdir -p /etc/circus/conf.d/watcher.d
+ADD circusd.ini /etc/circus.conf/conf.d/circud.ini
+ADD nginx.ini /etc/circus.conf/conf.d/watcher.d/nginx.ini
+ADD php-fpm.ini /etc/circus.conf/conf.d/watcher.d/php-fpm.ini
+
+# configure nginx
+ADD php.conf /etc/nginx/conf.d/php.conf
+ADD moodle.conf /etc/nginx/sites-available/moodle.conf
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf \
+    && ln -s \
+        /etc/nginx/sites-available/moodle.conf \
+        /etc/nginx/sites-enabled/moodle.conf
+
+# remove unused system packages and files
+RUN apt-get -y -qq --force-yes purge \
+        software-properties-common \
+        wget \
+    && apt-get -y -qq --force-yes autoremove \
+    && rm /opt/src/$APP_C
