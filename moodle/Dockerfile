@@ -65,17 +65,17 @@ RUN apt-get -y -qq --force-yes update \
 
 # configure circus
 RUN mkdir -p /etc/circus/conf.d/watcher.d
-ADD circusd.ini /etc/circus.conf/conf.d/circud.ini
-ADD nginx.ini /etc/circus.conf/conf.d/watcher.d/nginx.ini
-ADD php-fpm.ini /etc/circus.conf/conf.d/watcher.d/php-fpm.ini
+ADD circusd.ini /etc/circus/conf.d/circusd.ini
+ADD nginx.ini /etc/circus/conf.d/watcher.d/nginx.ini
+ADD php-fpm.ini /etc/circus/conf.d/watcher.d/php-fpm.ini
 
 # configure nginx
-ADD php.conf /etc/nginx/conf.d/php.conf
 ADD moodle.conf /etc/nginx/sites-available/moodle.conf
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf \
     && ln -s \
         /etc/nginx/sites-available/moodle.conf \
-        /etc/nginx/sites-enabled/moodle.conf
+        /etc/nginx/sites-enabled/moodle.conf \
+    && rm /etc/nginx/sites-enabled/default
 
 # remove unused system packages and files
 RUN apt-get -y -qq --force-yes purge \
@@ -83,3 +83,9 @@ RUN apt-get -y -qq --force-yes purge \
         wget \
     && apt-get -y -qq --force-yes autoremove \
     && rm /opt/src/$APP_C
+
+# container default running and ports
+EXPOSE 80 8080
+VOLUME ["/var/log"]
+ENTRYPOINT ["/usr/local/bin/circusd"]
+CMD ["/etc/circus/conf.d/circusd.ini"]
