@@ -77,6 +77,12 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf \
         /etc/nginx/sites-enabled/moodle.conf \
     && rm /etc/nginx/sites-enabled/default
 
+# configure php5-fpm to execute by www-data with right perms
+RUN sed \
+    -ri \
+    's/^;([a-z]+\.)(group|owner|mode)([ =0-9a-z]+)/\1\2\3/g' \
+    /etc/php5/fpm/pool.d/www.conf
+
 # remove unused system packages and files
 RUN apt-get -y -qq --force-yes purge \
         software-properties-common \
