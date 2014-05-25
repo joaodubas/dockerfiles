@@ -44,5 +44,5 @@ RUN apt-get -y -qq --force-yes purge software-properties-common \
 
 # configure command
 EXPOSE 3306
-VOLUMNE ["/data", "/var/log/mysql", "/etc/mysql"]
+VOLUME ["/data", "/var/log/mysql", "/etc/mysql"]
 CMD ["/scripts/start.sh"]
