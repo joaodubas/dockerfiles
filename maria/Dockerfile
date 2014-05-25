@@ -1,33 +1,40 @@
 # mariadb
 #
 # VERSION: see `TAG`
-FROM joaodubas/common:latest
+FROM debian:jessie
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
-# Set install params to prevent installation script from asking
-RUN echo "mariadb-server-10.0 mysql-server/root_password password 123root4" | debconf-set-selections \
-    && echo "mariadb-server-10.0 mysql-server/root_password_again password 123root4" | debconf-set-selections
+# enable debian source
+RUN apt-key add \
+        --recv-keys \
+        --keyserver \
+        keyserver.ubuntu.com 0xcbcb082a1bb943db \
+    && echo "deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/debian sid main" \
+        > /etc/apt/sources.list.d/mariadb"
 
-# Get needed packages
-RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db \
-    && echo "deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu quantal main" >> /etc/apt/sources.list \
-    && echo "deb-src http://ftp.osuosl.org/pub/mariadb/repo/10.0/ubuntu quantal main" >> /etc/apt/sources.list \
-    && apt-get -y update \
-    && apt-get install -y mariadb-server
+# install mariadb
+RUN apt-get -y -qq --force-yes update \
+    && apt-get -y -qq --force-yes install mariadb-server pwgen inotify-tools
 
-# Change mariadb conf
-ENV DATADIR /data
-RUN sed -i '/^bind-address*/ s/127.0.0.1/0.0.0.0/' /etc/mysql/my.cnf \
-    && sed -i '/^datadir*/ s|/var/lib/mysql|/data|' /etc/mysql/my.cnf
+# cleanup apt
+RUN apt-clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Expose port 3306 for mariadb connectivity
+# configure mariadb
+RUN sed -i -e 's/^datadir\s*=.*/datadir = \/data/' /etc/mysql/my.cnf \
+    && sed -i -e 's/^bind-address/#bind-address/' /etc/mysql/my.cnf \
+    && sed \
+        -i \
+        -e \
+        's/^innodb_buffer_pool_size\s*=.*/innodb_buffer_pool_size = 128M' \
+        /etc/mysql/my.cnf
+
+# add needed files
+ADD scripts /scripts
+RUN chmod 700 /scripts/start.sh \
+    && touch /firstrun
+
+# configure command
 EXPOSE 3306
-
-# Volume for data directory
-VOLUME ["/data"]
-
-# Add supervisor conf file
-ADD maria.conf /etc/supervisor/conf.d/program.d/maria.conf
-
-# Add mariadb startup script
-ADD maria.sh /opt/maria.sh
+VOLUMNE ["/data", "/var/log/mysql", "/etc/mysql"]
+CMD ["/scripts/start.sh"]
