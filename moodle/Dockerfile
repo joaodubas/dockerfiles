@@ -40,6 +40,7 @@ RUN mkdir -p /opt/src \
     && cd /opt/src \
     && wget http://download.moodle.org/download.php/direct/$APP_S/$APP_C \
     && tar -xzf $APP_C
+ADD config.php /opt/src/moodle/config.php
 
 # create data folder
 RUN mkdir /var/moodledata
