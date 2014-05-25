@@ -1,7 +1,7 @@
 # moodle
 #
 # VERSION: see `TAG`
-FROM debian:jessie
+FROM stackbrew/ubuntu:14.04
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # update system and install deps
@@ -88,7 +88,8 @@ RUN apt-get -y -qq --force-yes purge \
         software-properties-common \
         wget \
     && apt-get -y -qq --force-yes autoremove \
-    && rm /opt/src/$APP_C
+    && apt-get -y -qq --force-yes clean \
+    && rm -rf /opt/src/$APP_C /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # container default running and ports
 EXPOSE 80 8080
