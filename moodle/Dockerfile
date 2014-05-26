@@ -97,6 +97,6 @@ RUN sed \
 
 # container default running and ports
 EXPOSE 80 8080
-VOLUME ["/var/log"]
+VOLUME ["/var/log/nginx", "/var/log/circus"]
 ENTRYPOINT ["/usr/local/bin/circusd"]
 CMD ["/etc/circus/conf.d/circusd.ini"]
