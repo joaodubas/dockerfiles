@@ -87,9 +87,13 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf \
 
 # configure php5-fpm to execute by www-data with right perms
 RUN sed \
-    -ri \
-    's/^;([a-z]+\.)(group|owner|mode)([ =0-9a-z]+)/\1\2\3/g' \
-    /etc/php5/fpm/pool.d/www.conf
+        -ri \
+        's/^;([a-z]+\.)(group|owner|mode)([ =0-9a-z]+)/\1\2\3/g' \
+        /etc/php5/fpm/pool.d/www.conf \
+    && sed \
+        -ri \
+        's/^;daemonize = yes/daemonize = no/' \
+        /etc/php5/fpm/php-fpm.conf
 
 # container default running and ports
 EXPOSE 80 8080
