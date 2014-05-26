@@ -95,8 +95,12 @@ RUN sed \
         's/^;daemonize = yes/daemonize = no/' \
         /etc/php5/fpm/php-fpm.conf
 
+# configure startup script
+ADD start.sh /usr/local/bin/local_runner
+RUN chmod 700 /usr/local/bin/local_runner
+
 # container default running and ports
 EXPOSE 80 8080
 VOLUME ["/var/log/nginx", "/var/log/circus"]
-ENTRYPOINT ["/usr/local/bin/circusd"]
-CMD ["/etc/circus/conf.d/circusd.ini"]
+ENTRYPOINT ["/usr/local/bin/local_runner"]
+CMD ["--provision", "--run"]
