@@ -48,7 +48,7 @@ RUN apt-get -y -qq --force-yes update \
     && apt-get -y -qq --force-yes install \
         python-setuptools \
         python-dev \
-        libzmq-dev \
+        libzmq3-dev \
         libevent-dev \
     && easy_install pip \
     && pip install circus circus-web chaussette \
