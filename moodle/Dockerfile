@@ -64,7 +64,7 @@ RUN apt-get -y -qq --force-yes purge \
     && rm -rf /opt/src/$APP_C /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # change moodle perms and ownership
-ADD config.php /opt/src/moodle/config.php
+# ADD config.php /opt/src/moodle/config.php
 RUN chmod 6755 /opt/src/moodle \
     && find /opt/src/moodle -type f -exec chmod 6644 {} \; \
     && chmod 6777 /var/moodledata \
