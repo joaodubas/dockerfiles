@@ -1,43 +1,38 @@
-# moodle with ftp service
+# Moodle with ftp service
 #
 # VERSION: see `TAG`
-FROM joaodubas/moodle:latest
+FROM joaodubas/moodle:201405.1
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
-# install needed system deps
+# install system deps
 RUN apt-get -y -qq --force-yes update \
-    && apt-get -y -qq --force-yes python-setuptools openssl sudo\
-    && easy_install pip
+    && apt-get -y -qq --force-yes install \
+        python-setuptools \
+        openssl \
+        sudo
 
-# install python ftpd service
-RUN /usr/local/bin/pip \
-        install \
+# install ftpd server
+RUN easy_install pip \
+    && pip install \
         pyftpdlib \
-        --allow-external \
-        pyftpdlib \
-        --allow-unverified \
-        pyftpdlib
+        --allow-external pyftpdlib \
+        --allow-unverified pyftpdlib
 
-# create user to access ftpd service
+# configure ftpd
+ENV FTPD_PORT 8910
+ENV FTPD_HOME /home/app
+
+# add user unprivileged user
 RUN useradd \
         -G sudo,www-data \
-        -d /home/app \
+        -d ${FTPD_HOME} \
         -m \
         -p $(openssl passwd 123app4) \
         -s /bin/bash \
         app
 
-# add ftpd service to circus
-ADD ftpd.ini /etc/circus/conf.d/watcher.d/ftpd.ini
+# add circus conf
+ADD ftpd.ini /etc/circus/conf.d/watcher.d/
 
-# remove unused system packages and files
-RUN apt-get -y -qq --force-yes autoremove \
-    && apt-get -y -qq --force-yes clean \
-    && /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# setup envs
-ENV FTPD_HOME_FOLDER /home/app
-ENV FTPD_PORT 8921
-
-# configure container command
-EXPOSE 8921
+# configure container run
+EXPOSE 8910
