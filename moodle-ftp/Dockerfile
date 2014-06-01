@@ -20,7 +20,7 @@ RUN easy_install pip \
 
 # configure ftpd
 ENV FTPD_PORT 8910
-ENV FTPD_HOME /home/app
+ENV FTPD_HOME /
 
 # add user unprivileged user
 RUN useradd \
