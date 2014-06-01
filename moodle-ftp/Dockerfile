@@ -20,12 +20,13 @@ RUN easy_install pip \
 
 # configure ftpd
 ENV FTPD_PORT 8910
-ENV FTPD_HOME /
+ADD pyftpd /usr/local/bin/pyftpd
+RUN chmod 770 /usr/local/bin/pyftpd
 
 # add user unprivileged user
 RUN useradd \
         -G sudo,www-data \
-        -d ${FTPD_HOME} \
+        -d /home/app \
         -m \
         -p $(openssl passwd 123app4) \
         -s /bin/bash \
