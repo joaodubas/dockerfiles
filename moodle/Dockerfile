@@ -9,6 +9,7 @@ RUN apt-get -y -qq --force-yes update \
     && apt-get -y -qq --force-yes install \
         software-properties-common \
         wget \
+        unzip \
         nginx-full \
         php5 \
         php5-fpm \
@@ -35,13 +36,21 @@ RUN apt-key \
 
 # download moodle
 ENV APP_V 27
-ENV APP_S stable$APP_V
-ENV APP_C moodle-latest-$APP_V.tgz
+ENV APP_S stable${APP_V}
+ENV APP_C moodle-latest-${APP_V}.tgz
 RUN mkdir -p /opt/src \
     && cd /opt/src \
-    && wget http://download.moodle.org/download.php/direct/$APP_S/$APP_C \
-    && tar -xzf $APP_C \
+    && wget http://download.moodle.org/download.php/direct/${APP_S}/${APP_C} \
+    && tar -xzf ${APP_C} \
     && mkdir /var/moodledata
+
+# install halboo theme
+ENV THM_V 2014011201
+ENV THM_C theme_halboo_moodle26_${THM_V}.zip
+RUN cd /opt/src \
+    && wget https://moodle.org/plugins/download.php/5186/${THM_C} \
+    && unzip ${THM_C} \
+    && mv halboo /opt/src/moodle/theme/
 
 # install circus
 RUN apt-get -y -qq --force-yes update \
@@ -59,9 +68,15 @@ RUN apt-get -y -qq --force-yes update \
 RUN apt-get -y -qq --force-yes purge \
         software-properties-common \
         wget \
+        unzip \
     && apt-get -y -qq --force-yes autoremove \
     && apt-get -y -qq --force-yes clean \
-    && rm -rf /opt/src/$APP_C /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf \
+        /opt/src/${APP_C} \
+        /opt/src/${THM_C} \
+        /var/lib/apt/lists/* \
+        /tmp/* \
+        /var/tmp/*
 
 # change moodle perms and ownership
 # ADD config.php /opt/src/moodle/config.php
