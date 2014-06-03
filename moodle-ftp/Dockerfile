@@ -1,7 +1,7 @@
 # Moodle with ftp service
 #
 # VERSION: see `TAG`
-FROM joaodubas/moodle:201406.1
+FROM joaodubas/moodle:201406.2
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # install system deps
