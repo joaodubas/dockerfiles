@@ -47,10 +47,13 @@ RUN mkdir -p /opt/src \
 # install halboo theme
 ENV THM_V moodle_26_2014011201
 ENV THM_C theme_halboo_${THM_V}.zip
+ENV THM_R /opt/src/moodle/theme/halboo
 RUN cd /opt/src \
     && wget https://moodle.org/plugins/download.php/5186/${THM_C} \
     && unzip ${THM_C} \
     && mv halboo /opt/src/moodle/theme/
+ADD halboo/layout/breadcrumb_arrow.png ${THM_R}/layout/breadcrumb_arrow.png
+ADD halboo/style/core.css ${THM_R}/style/core.css
 
 # install grid couser format
 ENV CF_V moodle27_2014052000
