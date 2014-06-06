@@ -44,25 +44,6 @@ RUN mkdir -p /opt/src \
     && tar -xzf ${APP_C} \
     && mkdir /var/moodledata
 
-# install halboo theme
-ENV THM_V moodle_26_2014011201
-ENV THM_C theme_halboo_${THM_V}.zip
-ENV THM_R /opt/src/moodle/theme/halboo
-RUN cd /opt/src \
-    && wget https://moodle.org/plugins/download.php/5186/${THM_C} \
-    && unzip ${THM_C} \
-    && mv halboo /opt/src/moodle/theme/
-ADD halboo/layout/breadcrumb_arrow.png ${THM_R}/layout/breadcrumb_arrow.png
-ADD halboo/style/core.css ${THM_R}/style/core.css
-
-# install grid couser format
-ENV CF_V moodle27_2014052000
-ENV CF_C format_grid_${CF_V}.zip
-RUN cd /opt/src \
-    && wget https://moodle.org/plugins/download.php/6103/${CF_C} \
-    && unzip ${CF_C} \
-    && mv grid /opt/src/moodle/course/format/
-
 # install circus
 RUN apt-get -y -qq --force-yes update \
     && apt-get -y -qq --force-yes install \
@@ -84,8 +65,6 @@ RUN apt-get -y -qq --force-yes purge \
     && apt-get -y -qq --force-yes clean \
     && rm -rf \
         /opt/src/${APP_C} \
-        /opt/src/${THM_C} \
-        /opt/src/${CF_C} \
         /var/lib/apt/lists/* \
         /tmp/* \
         /var/tmp/*
