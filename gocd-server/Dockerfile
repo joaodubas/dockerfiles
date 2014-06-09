@@ -11,7 +11,7 @@ RUN apt-get -y -qq --force-yes update \
 # download server
 ENV GOVERSION 14.1.0
 ENV GOMINOR ${GOVERSION}-18882
-ENV GOFILE go-server-${GOMINOR}.deb
+ENV GOFILE go-server-${GOMINOR}.zip
 ENV GOURL http://download01.thoughtworks.com/go
 RUN mkdir -p /opt/src \
     && cd /opt/src \
@@ -19,7 +19,9 @@ RUN mkdir -p /opt/src \
 
 # install server
 RUN cd /opt/src \
-    && DEBIAN_FRONTEND=noninteractive dpkg -i ${GOFILE}
+    && unzip ${GOFILE} \
+    && ln -s /opt/src/go-server-${GOVERSION} /opt/src/go-server \
+    && chmod 754 /opt/src/go-server/server.sh
 
 # remove unused files
 RUN apt-get -y -qq --force-yes clean \
@@ -29,4 +31,4 @@ RUN apt-get -y -qq --force-yes clean \
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 ENV DAEMON N
 EXPOSE 8153
-CMD ["/usr/share/go-server/server.sh"]
+CMD ["/opt/src/go-server/server.sh"]
