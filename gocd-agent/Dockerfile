@@ -1,4 +1,4 @@
-# go continuous delivery server
+# go continuous delivery agent
 #
 # VERSION: see `TAG`
 FROM joaodubas/oracle-jdk:latest
