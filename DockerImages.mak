@@ -18,3 +18,4 @@ DOCKER_SPIDER=./spidermonkey
 DOCKER_MOODLE=./moodle
 DOCKER_JDK=./oracle-jdk
 DOCKER_GO_SERVER=./gocd-server
+DOCKER_GO_AGENT=./gocd-agent
