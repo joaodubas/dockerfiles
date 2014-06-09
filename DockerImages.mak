@@ -16,4 +16,5 @@ DOCKER_ORIENT=./orientdb
 DOCKER_NGINX=./nginx
 DOCKER_SPIDER=./spidermonkey
 DOCKER_MOODLE=./moodle
-DOCKER_MOODLE_FTP=./moodle-ftp
+DOCKER_JDK=./oracle-jdk
+DOCKER_GO_SERVER=./gocd-server
