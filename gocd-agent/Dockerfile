@@ -30,5 +30,4 @@ RUN apt-get -y -qq --force-yes clean \
 # command
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 ENV DAEMON N
-EXPOSE 8153
-CMD ["/opt/src/go-server/agent.sh"]
+CMD ["/opt/src/go-agent/agent.sh"]
