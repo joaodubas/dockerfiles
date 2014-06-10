@@ -1,0 +1,4 @@
+ipython==2.1.0
+Werkzeug==0.9.6
+Jinja2==2.7.3
+Flask==0.10.1
