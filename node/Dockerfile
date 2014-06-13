@@ -1,18 +1,24 @@
 # nodejs
 #
 # VERSION: see `TAG`
-FROM joaodubas/common:latest
+FROM debian:jessie
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
-# Update dependencies
-RUN apt-get -y update \
-    && apt-get -y install git
+# update dependencies
+RUN apt-get -y -qq --force-yes update \
+    && apt-get -y -qq --force-yes install git build-essential
 
-# Install node binary
-ENV VERSION_NODE 0.10.26
+# install node binary
+ENV NODE_VERSION 0.10.28
+ENV NODE_FILENAME node-v${NODE_VERSION}-linux-x64
+ENV NODE_TGZ ${NODE_FILENAME}.tar.gz
 RUN mkdir /opt/downloads \
     && cd /opt/downloads \
-    && wget http://nodejs.org/dist/v$VERSION_NODE/node-v$VERSION_NODE-linux-x64.tar.gz \
-    && tar -xzf node-v$VERSION_NODE-linux-x64.tar.gz \
-    && ln -s node-v$VERSION_NODE-linux-x64 nodejs \
+    && wget http://nodejs.org/dist/v${NODE_VERSION}/${NODE_TGZ} \
+    && tar -xzf ${NODE_TGZ} \
+    && ln -s ${NODE_FILENAME} nodejs \
     && ln -s /opt/downloads/nodejs/bin/* /usr/local/bin
+
+# cleanup temp files
+RUN apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
