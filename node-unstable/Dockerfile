@@ -6,7 +6,7 @@ MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # update dependencies
 RUN apt-get -y -qq --force-yes update \
-    && apt-get -y -qq --force-yes install git build-essential
+    && apt-get -y -qq --force-yes install git build-essential wget
 
 # install node binary
 ENV NODE_VERSION 0.11.13
@@ -20,5 +20,5 @@ RUN mkdir /opt/downloads \
     && ln -s /opt/downloads/nodejs/bin/* /usr/local/bin
 
 # cleanup temp files
-RUN apt-get clean \
+RUN apt-get -y -qq --force-yes clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
