@@ -1,21 +1,24 @@
 # spidermonkey
 #
 # VERSION: see `TAG`
-FROM joaodubas/common:latest
+FROM debian:jessie
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
-# Install deps
+# install deps
 RUN apt-get -y -qq update \
-    && apt-get -y -qq install zip unzip libnspr4-dev
+    && apt-get -y -qq install zip unzip libnspr4-dev wget
 
-# Download binary
-RUN mkdir -p /opt/downloads/jsshell \
-    && cd /opt/downloads \
-    && wget http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-trunk/jsshell-linux-x86_64.zip \
-    && unzip jsshell-linux-x86_64.zip -d /opt/downloads/jsshell \
-    && ln -s /opt/downloads/jsshell/js /usr/local/bin \
-    && ln -s /opt/downloads/jsshell/*.so /usr/local/share
+# download binary
+ENV SPIDER_ZIP jsshell-linux-x86_64.zip
+ENV SPIDER_ROOT /opt/src/jsshell
+RUN mkdir -p ${SPIDER_ROOT} \
+    && cd ${SPIDER_ROOT}/../ \
+    && wget http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly/latest-trunk/${SPIDER_ZIP} \
+    && unzip ${SPIDER_ZIP} -d ${SPIDER_ROOT} \
+    && ln -s ${SPIDER_ROOT}/js /usr/local/bin \
+    && ln -s ${SPIDER_ROOT}/*.so /usr/local/share
 
-# Define volumes and workdir
-VOLUME ['/opt/app']
-WORKDIR /opt/app
+# cleanup temp
+RUN apt-get -y -qq --force-yes clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && rm -rf ${SPIDER_ROOT}/../${SPIDER_ZIP}
