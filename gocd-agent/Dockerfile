@@ -1,7 +1,7 @@
 # go continuous delivery agent
 #
 # VERSION: see `TAG`
-FROM joaodubas/oracle-jdk:latest
+FROM joaodubas/gocd-base:latest
 MAINTAINER Joao Paulo Dubas "joao.dubas@gmail.com"
 
 # install system deps
